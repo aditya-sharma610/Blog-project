@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Blog</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --secondary: #f43f5e;
+      --dark: #1e293b;
+      --light-dark: #334155;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --light-gray: #e2e8f0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background-color: var(--light);
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark);
+      color: var(--light);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    body.dark-mode header {
+      background-color: var(--light-dark);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--secondary);
+    }
+
+    body.dark-mode .logo {
+      color: var(--primary-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    body.dark-mode .nav-links a {
+      color: var(--light);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 24px;
+      color: var(--dark);
+    }
+
+    body.dark-mode .mobile-menu-btn {
+      color: var(--light);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--dark);
+    }
+
+    body.dark-mode .theme-toggle {
+      color: var(--light);
+    }
+
+    /* Hero */
+    .hero {
+      margin: 40px 0;
+    }
+
+    .featured-post {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .featured-post {
+      background-color: var(--light-dark);
+    }
+
+    .featured-post-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .featured-post-content {
+      padding: 30px;
+    }
+
+    .featured-post-category {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    body.dark-mode .featured-post-category {
+      background-color: var(--primary-light);
+    }
+
+    .featured-post-title {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .featured-post-excerpt {
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+
+    body.dark-mode .featured-post-excerpt {
+      color: var(--light-gray);
+    }
+
+    .read-more {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 25px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+
+    body.dark-mode .read-more {
+      background-color: var(--primary-light);
+    }
+
+    .read-more:hover {
+      background-color: #3b36b5;
+    }
+
+    /* Main Content */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+      margin: 50px 0;
+    }
+
+    /* Blog Posts */
+    .blog-posts {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .blog-post {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    body.dark-mode .blog-post {
+      background-color: var(--light-dark);
+    }
+
+    .blog-post:hover {
+      transform: translateY(-5px);
+    }
+
+    .blog-post-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .blog-post-content {
+      padding: 20px;
+    }
+
+    .blog-post-category {
+      display: inline-block;
+      background-color: var(--secondary);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .blog-post-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .blog-post-excerpt {
+      color: var(--gray);
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    body.dark-mode .blog-post-excerpt {
+      color: var(--light-gray);
+    }
+
+    .blog-post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    body.dark-mode .blog-post-meta {
+      color: var(--light-gray);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .sidebar-widget {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    body.dark-mode .sidebar-widget {
+      background-color: var(--light-dark);
+    }
+
+    .widget-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .widget-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background-color: var(--primary);
+    }
+
+    body.dark-mode .widget-title::after {
+      background-color: var(--primary-light);
+    }
+
+    .categories-list {
+      list-style: none;
+    }
+
+    .categories-list li {
+      margin-bottom: 10px;
+    }
+
+    .categories-list a {
+      display: flex;
+      justify-content: space-between;
+      color: var(--dark);
+      text-decoration: none;
+      padding: 8px 0;
+      transition: color 0.3s;
+    }
+
+    body.dark-mode .categories-list a {
+      color: var(--light);
+    }
+
+    .categories-list a:hover {
+      color: var(--primary);
+    }
+
+    .categories-list span {
+      background-color: var(--light-gray);
+      color: var(--dark);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    body.dark-mode .categories-list span {
+      background-color: var(--dark);
+      color: var(--light);
+    }
+
+    .about-widget img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    body.dark-mode .social-links a {
+      background-color: var(--primary-light);
+    }
+
+    .social-links a:hover {
+      background-color: var(--secondary);
+    }
+
+    /* Newsletter */
+    .newsletter-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .newsletter-form input {
+      padding: 12px;
+      border: 1px solid var(--light-gray);
+      border-radius: 5px;
+      font-size: 14px;
+      background-color: var(--light);
+    }
+
+    body.dark-mode .newsletter-form input {
+      background-color: var(--dark);
+      border-color: var(--light-dark);
+      color: var(--light);
+    }
+
+    .newsletter-form button {
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    body.dark-mode .newsletter-form button {
+      background-color: var(--primary-light);
+    }
+
+    .newsletter-form button:hover {
+      background-color: #3b36b5;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--dark);
+      color: var(--light);
+      padding: 50px 0 20px;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-widget h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-widget h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background-color: var(--primary);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .footer-social-links a {
+      color: var(--light);
+      font-size: 20px;
+      transition: color 0.3s;
+    }
+
+    .footer-social-links a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--light-dark);
+      color: var(--gray);
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        background-color: white;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s;
+      }
+
+      body.dark-mode .nav-links {
+        background-color: var(--light-dark);
+      }
+
+      .nav-links.active {
+        height: 250px;
+        padding: 20px 0;
+      }
+
+      .nav-links a {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .theme-toggle {
+        margin-left: auto;
+        margin-right: 15px;
+      }
+
+      .featured-post {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-post-image {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .blog-posts {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-container">
+        <a href="#" class="logo">Modern<span>Blog</span></a>
+        
+        <nav>
+          <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Contact</a>
+          </div>
+        </nav>
+        
+        <button class="theme-toggle" id="themeToggle">☀️</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="featured-post">
+        <div class="featured-post-image-container">
+          <img 
+            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/07acd2d6-b436-4d2a-bb68-4f2f4eaed66c.png" 
+            alt="Modern workspace with laptop, notebook and coffee cup on wooden desk, sunlight coming through window" 
+            class="featured-post-image" 
+            onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2c21e8ea-adfb-430a-b60a-5fbf6332c189.png'"
+          />
+        </div>
+        <div class="featured-post-content">
+          <span class="featured-post-category">Featured</span>
+          <h2 class="featured-post-title">The Future of Web Development in 2023</h2>
+          <p class="featured-post-excerpt">Discover the latest trends and technologies that are shaping the future of web development and how you can stay ahead of the curve.</p>
+          <a href="#" class="read-more">Read More</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-content">
+      <div class="content">
+        <div class="blog-posts">
+          <!-- Post 1 -->
+          <article class="blog-post">
+            <img 
+              src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9712f4c9-db71-4df6-afc4-772cb27abd50.png" 
+              alt="Person coding on laptop with multiple monitors showing code editor and design software" 
+              class="blog-post-image"
+              onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/da8fe13d-b642-42f4-b165-a15d1b0f32fe.png?text=Coding+Workspace'"
+            />
+            <div class="blog-post-content">
+              <span class="blog-post-category">Technology</span>
+              <h3 class="blog-post-title">10 JavaScript Tips Every Developer Should Know</h3>
+              <p class="blog-post-excerpt">Learn essential JavaScript techniques that will make your code more efficient and readable.</p>
+              <div class="blog-post-meta">
+                <span>May 15, 2023</span>
+                <span>8 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 2 -->
+          <article class="blog-post">
+            <img 
+              src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/918c7961-9f22-47d1-9c9a-539ea6958a4b.png" 
+              alt="Colorful abstract representation of CSS styling with geometric shapes and floating elements" 
+              class="blog-post-image"
+              onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d3bc9f25-b97d-424e-b8e7-36f31dd815c2.png?text=CSS+Design'"
+            />
+            <div class="blog-post-content">
+              <span class="blog-post-category">Design</span>
+              <h3 class="blog-post-title">Mastering CSS Grid Layout</h3>
+              <p class="blog-post-excerpt">A comprehensive guide to creating modern, responsive layouts with CSS Grid.</p>
+              <div class="blog-post-meta">
+                <span>May 10, 2023</span>
+                <span>12 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 3 -->
+          <article class="blog-post">
+            <img 
+              src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2a34624a-9b96-4a32-9a11-f1f9d9b550f0.png" 
+              alt="Man in VR headset interacting with holographic interface in dark room with neon lights" 
+              class="blog-post-image"
+              onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b9e9e263-6738-4c9c-8e08-d1ff1c1b7e92.png?text=VR+Experience'"
+            />
+            <div class="blog-post-content">
+              <span class="blog-post-category">Innovation</span>
+              <h3 class="blog-post-title">The Rise of Web3 and Its Impact</h3>
+              <p class="blog-post-excerpt">Exploring how decentralized technologies are changing the internet landscape.</p>
+              <div class="blog-post-meta">
+                <span>May 05, 2023</span>
+                <span>10 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 4 -->
+          <article class="blog-post">
+            <img 
+              src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/323bd5ce-5a17-4fd0-8b92-8c24d271be8b.png" 
+              alt="Laptop showing analytics dashboard with colorful graphs and charts" 
+              class="blog-post-image"
+              onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/071f4d0f-d117-43f2-a9fe-55570cce9995.png'"
+            />
+            <div class="blog-post-content">
+              <span class="blog-post-category">Business</span>
+              <h3 class="blog-post-title">SEO Strategies for 2023</h3>
+              <p class="blog-post-excerpt">Advanced SEO techniques to improve your website's visibility and ranking.</p>
+              <div class="blog-post-meta">
+                <span>April 28, 2023</span>
+                <span>15 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 5 -->
+          <article class="blog-post">
+            <img 
+              src="https://placehold.co/600x400" 
+              alt="Person holding smartphone with mobile app interface design visible on screen" 
+              class="blog-post-image"
+              onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b89f8200-dda2-4fc0-b70e-0f69bba4d0dd.png'"
+            />
+            <div class="blog-post-content">
+              <span class="blog-post-category">Mobile</span>
+              <h3 class="blog-post-title">Building Cross-Platform Apps with React Native</h3>
+              <p class="blog-post-excerpt">Learn how to create high-quality mobile apps for both iOS and Android using React Native framework.</p>
+              <div class="blog-post-meta">
+                <span>April 22, 2023</span>
+                <span>18 min read</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Post 6 -->
+          <article class="blog-post">
+            <img 
+              src="https://placehold.co/600x400" 
+              alt="Close-up of developer's hands typing on mechanical keyboard with code editor visible on monitor" 
+              class="blog-post-image"
+              onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/53d86083-255c-4599-9bc7-fc53ab3a4a15.png'"
+            />
+            <div class="blog-post-content">
+              <span class="blog-post-category">Programming</span>
+              <h3 class="blog-post-title">Clean Code Principles Every Developer Should Follow</h3>
+              <p class="blog-post-excerpt">Practical guidelines for writing maintainable and efficient code that your team will love.</p>
+              <div class="blog-post-meta">
+                <span>April 18, 2023</span>
+                <span>14 min read</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="sidebar-widget about-widget">
+          <h3 class="widget-title">About Me</h3>
+          <img 
+            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/251b9c64-ad2b-4be8-b747-82d3161848d4.png" 
+            alt="Portrait of smiling web developer with glasses in casual attire standing in front of bookshelf" 
+            onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/36ffb93c-3128-4196-b489-dde395f6b0e7.png'"
+          />
+          <p>Hi, I'm Sarah, a full-stack developer and tech blogger passionate about sharing knowledge and helping others learn web technologies.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Twitter">𝕏</a>
+            <a href="#" aria-label="GitHub">G</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+          </div>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Categories</h3>
+          <ul class="categories-list" id="categoriesList">
+            <li>
+              <a href="#" data-category="all">All</a>
+              <span>28</span>
+            </li>
+            <li>
+              <a href="#" data-category="technology">Technology</a>
+              <span>8</span>
+            </li>
+            <li>
+              <a href="#" data-category="design">Design</a>
+              <span>6</span>
+            </li>
+            <li>
+              <a href="#" data-category="business">Business</a>
+              <span>5</span>
+            </li>
+            <li>
+              <a href="#" data-category="innovation">Innovation</a>
+              <span>4</span>
+            </li>
+            <li>
+              <a href="#" data-category="mobile">Mobile</a>
+              <span>5</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Newsletter</h3>
+          <p>Subscribe to get notified about new articles and resources.</p>
+          <form class="newsletter-form" id="newsletterForm">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-widget">
+          <h3>ModernBlog</h3>
+          <p>Sharing the latest in technology, design, and business insights to help you grow.</p>
+          <div class="footer-social-links">
+            <a href="#" aria-label="Twitter">𝕏</a>
+            <a href="#" aria-label="Facebook">F</a>
+            <a href="#" aria-label="Instagram">IG</a>
+            <a href="#" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+        
+        <div class="footer-widget">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-widget">
+          <h3>Categories</h3>
+          <ul class="footer-links">
+            <li><a href="#">Technology</a></li>
+            <li><a href="#">Design</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Mobile</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-widget">
+          <h3>Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2023 ModernBlog. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.querySelector('.nav-links');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    // Check for saved theme preference or use preferred color scheme
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDarkScheme.matches)) {
+      body.classList.add('dark-mode');
+      themeToggle.textContent = '🌙';
+    } else {
+      themeToggle.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        themeToggle.textContent = '🌙';
+      } else {
+        localStorage.setItem('theme', 'light');
+        themeToggle.textContent = '☀️';
+      }
+    });
+
+    // Category Filtering
+    const categoriesList = document.getElementById('categoriesList');
+    const blogPosts = document.querySelectorAll('.blog-post');
+
+    categoriesList.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      if (e.target.tagName === 'A') {
+        const selectedCategory = e.target.dataset.category;
+        
+        // Remove active class from all links
+        const categoryLinks = document.querySelectorAll('.categories-list a');
+        categoryLinks.forEach(link => link.classList.remove('active'));
+        
+        // Add active class to clicked link
+        e.target.classList.add('active');
+        
+        // Filter posts
+        blogPosts.forEach(post => {
+          const postCategory = post.querySelector('.blog-post-category').textContent.toLowerCase();
+          
+          if (selectedCategory === 'all' || postCategory === selectedCategory) {
+            post.style.display = '';
+          } else {
+            post.style.display = 'none';
+          }
+        });
+      }
+    });
+
+    // Newsletter Form
+    const newsletterForm = document.getElementById('newsletterForm');
+    
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const emailInput = newsletterForm.querySelector('input');
+      const email = emailInput.value;
+      
+      // Here you would typically send the email to your server
+      console.log('Subscribed:', email);
+      alert('Thank you for subscribing!');
+      emailInput.value = '';
+    });
+  </script>
+</body>
+</html>
+
+```
